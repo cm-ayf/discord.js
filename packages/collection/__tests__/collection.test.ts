@@ -23,6 +23,20 @@ function expectInvalidFunctionError(cb: () => unknown, val?: unknown): void {
 	}).toThrowError(new TypeError(`${val} is not a function`));
 }
 
+test('create new collection from iterable and key generator', () => {
+	const values = [
+		{ id: 'a', value: 1 },
+		{ id: 'b', value: 2 },
+		{ id: 'c', value: 3 },
+	];
+	const coll = Collection.from(values, (v) => v.id);
+	expect(coll.size).toStrictEqual(3);
+	expect(coll.get('a')).toStrictEqual({ id: 'a', value: 1 });
+	expect(coll.get('b')).toStrictEqual({ id: 'b', value: 2 });
+	expect(coll.get('c')).toStrictEqual({ id: 'c', value: 3 });
+	expect(coll.get('d')).toBeUndefined();
+});
+
 test('do basic map operations', () => {
 	const coll = createCollectionFrom(['a', 1]);
 	expect(coll.size).toEqual(1);
