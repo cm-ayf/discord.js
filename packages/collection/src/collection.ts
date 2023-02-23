@@ -38,6 +38,22 @@ export interface Collection<K, V> extends Map<K, V> {
  */
 export class Collection<K, V> extends Map<K, V> {
 	/**
+	 * Creates a new Collection from iterable values and a key generator.
+	 *
+	 * @param iterable - The data the returned collection will be initialized with
+	 * @param key - a function that receives an element of the iterable and returns the key for the element
+	 * @returns newly created collection that contains the elements of iterable
+	 */
+	public static from<V, K>(iterable: Iterable<V>, key: (value: V) => K): Collection<K, V> {
+		const coll = new this<K, V>();
+		for (const value of iterable) {
+			coll.set(key(value), value);
+		}
+
+		return coll;
+	}
+
+	/**
 	 * Obtains the value of the given key if it exists, otherwise sets and returns the value provided by the default value generator.
 	 *
 	 * @param key - The key to get if it exists, or set otherwise
